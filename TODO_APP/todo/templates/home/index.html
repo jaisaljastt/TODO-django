@@ -1,0 +1,584 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TODO by JST</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Montserrat", sans-serif;
+        background-color: #2a2b2a;
+        color: white;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Header Styles */
+      .header {
+        background-color: #151515;
+        box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 56px;
+      }
+
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .header-title {
+        color: #ffd100;
+        font-size: 36px;
+        font-weight: 900;
+        letter-spacing: 0.9px;
+        line-height: 40px;
+      }
+
+      .header-subtitle {
+        color: white;
+        font-size: 12px;
+        font-weight: 900;
+        line-height: 23px;
+        margin-top: auto;
+      }
+
+      .header-right {
+        display: flex;
+        align-items: center;
+        gap: 24px;
+      }
+
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .user-info span {
+        color: white;
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      .logout-btn {
+        background: none;
+        border: none;
+        color: #ffd100;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: color 0.15s;
+      }
+
+      .logout-btn:hover {
+        color: #e6c200;
+      }
+
+      /* Date and Actions Bar */
+      .actions-bar {
+        background-color: #2a2b2a;
+        padding: 16px 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+
+      .date-section {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .date-label {
+        color: #ffd100;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .date-value {
+        color: white;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .btn-yellow {
+        background-color: #ffd100;
+        border: none;
+        border-radius: 4px;
+        padding: 4px 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: background-color 0.15s;
+      }
+
+      .btn-yellow:hover {
+        background-color: #e6c200;
+      }
+
+      .btn-yellow span {
+        color: #151515;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .task-input-section {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .task-input {
+        background-color: #151515;
+        border: 1px solid #4b5563;
+        border-radius: 4px;
+        padding: 8px 12px;
+        color: white;
+        font-size: 12px;
+        outline: none;
+      }
+
+      .task-input:focus {
+        border-color: #ffd100;
+      }
+
+      .task-input::placeholder {
+        color: #9ca3af;
+      }
+
+      /* Status Headers */
+      .status-headers {
+        padding: 16px 28px;
+      }
+
+      .status-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+      }
+
+      .status-header {
+        text-align: center;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .status-todo {
+        color: #ffd100;
+      }
+      .status-progress {
+        color: #3c34d8;
+      }
+      .status-done {
+        color: #56ca17;
+      }
+      .status-failed {
+        color: #da1d1d;
+      }
+
+      /* Kanban Board */
+      .kanban-board {
+        flex: 1;
+        padding: 24px 28px;
+      }
+
+      .board-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 24px;
+        height: 100%;
+      }
+
+      .column {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .task-card {
+        background-color: #151515;
+        border-radius: 8px;
+        padding: 12px;
+        min-height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: relative;
+      }
+
+      .task-text {
+        color: white;
+        font-size: 12px;
+        font-weight: 500;
+        flex: 1;
+        text-align: center;
+      }
+
+      .task-btn {
+        background: none;
+        border: none;
+        cursor: pointer;
+        opacity: 0.7;
+        transition: opacity 0.15s;
+        padding: 4px;
+      }
+
+      .task-btn:hover {
+        opacity: 1;
+      }
+
+      /* Footer */
+      .footer {
+        background-color: #151515;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .footer span {
+        color: white;
+        font-size: 12px;
+        font-weight: 500;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 1024px) {
+        .header {
+          padding: 0 24px;
+        }
+
+        .actions-bar {
+          padding: 16px 24px;
+        }
+
+        .status-headers {
+          padding: 16px 24px;
+        }
+
+        .kanban-board {
+          padding: 24px 24px;
+        }
+
+        .status-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .board-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .header-title {
+          font-size: 24px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .actions-bar {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .task-input-section {
+          width: 100%;
+        }
+
+        .task-input {
+          flex: 1;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <h1 class="header-title">TODO</h1>
+        <span class="header-subtitle">BY JST</span>
+      </div>
+
+      <div class="header-right">
+        <div class="user-info">
+          <svg
+            width="16"
+            height="18"
+            viewBox="0 0 16 18"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M14.3996 0H1.59656C0.716727 0 -3.05176e-05 0.76 -3.05176e-05 1.688V16.312C-3.05176e-05 17.24 0.720519 18 1.60035 18H14.3996C15.2794 18 16 17.24 16 16.312V1.688C15.9962 0.76 15.2794 0 14.3996 0ZM13.8649 15.752H2.13128V2.248H13.8649V15.752ZM4.26638 10.124H11.7336V11.248H4.26638V10.124ZM4.26638 12.376H11.7336V13.5H4.26638V12.376ZM5.33204 5.064C5.33204 4.132 6.0488 3.376 6.93242 3.376C7.81604 3.376 8.5328 4.132 8.5328 5.064C8.5328 5.996 7.81604 6.752 6.93242 6.752C6.0488 6.752 5.33204 5.996 5.33204 5.064ZM7.99807 6.752H5.86676C4.98693 6.752 4.26638 7.26 4.26638 7.876V9H9.59845V7.876C9.59845 7.256 8.8779 6.752 7.99807 6.752Z"
+              fill="white"
+            />
+          </svg>
+          <span>Hi, Jaisal</span>
+        </div>
+        <a
+          style="text-decoration: none"
+          class="logout-btn"
+          href="{% url 'login' %}"
+          >LOGOUT</a
+        >
+      </div>
+    </header>
+
+    <!-- Date and Actions Bar -->
+    <div class="actions-bar">
+      <div class="date-section">
+        <span class="date-label">FOR DATE</span>
+        <span class="date-value" id="selectedDate">12-12-25</span>
+        <button class="btn-yellow">
+          <svg
+            width="14"
+            height="15"
+            viewBox="0 0 14 15"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M13.202 0.852C12.6728 0.285 12.0316 0 11.2784 0H2.7216C1.9684 0 1.3272 0.285 0.7952 0.852C0.2632 1.419 0 2.109 0 2.916V12.081C0 12.879 0.266 13.566 0.7952 14.139C1.3244 14.712 1.9684 15 2.7216 15H11.2784C12.0316 15 12.6728 14.712 13.2048 14.142C13.734 13.569 14 12.882 14 12.084V2.916C14 2.109 13.734 1.422 13.202 0.852ZM12.4432 12.084C12.446 12.771 11.928 13.332 11.2868 13.335C11.284 13.335 11.2812 13.335 11.2784 13.335H2.7216C2.0804 13.338 1.5568 12.783 1.554 12.096C1.554 12.093 1.554 12.09 1.554 12.084V2.916C1.554 2.229 2.072 1.671 2.7132 1.668C2.716 1.668 2.7188 1.668 2.7216 1.668H11.2784C11.9196 1.665 12.4432 2.22 12.446 2.907C12.446 2.91 12.446 2.913 12.446 2.916V12.084H12.4432Z"
+              fill="#151515"
+            />
+            <path
+              d="M10.4077 6.6918H7.75786V3.86598C7.76604 3.65085 7.60793 3.4706 7.40892 3.46188C7.39802 3.46188 7.38984 3.46188 7.37893 3.46188H6.62107C6.41934 3.45316 6.25032 3.61887 6.24214 3.834C6.24214 3.84563 6.24214 3.85435 6.24214 3.86598V6.6918H3.59235C3.39062 6.68308 3.2216 6.8517 3.21342 7.06393C3.21342 7.07265 3.21342 7.08428 3.21342 7.093V7.90121C3.20524 8.11634 3.36336 8.29659 3.56509 8.30531C3.57327 8.30531 3.58418 8.30531 3.59235 8.30531H6.24214V11.134C6.23396 11.3492 6.38935 11.5294 6.59108 11.5381C6.60199 11.5381 6.61017 11.5381 6.62107 11.5381H7.37893C7.58067 11.5469 7.74968 11.3812 7.75786 11.166C7.75786 11.1544 7.75786 11.1457 7.75786 11.134V8.30822H10.4077C10.6094 8.31694 10.7784 8.15123 10.7866 7.93609C10.7866 7.92446 10.7866 7.91574 10.7866 7.90411V7.09591C10.7948 6.88077 10.6394 6.70052 10.4376 6.6918C10.4267 6.6918 10.4186 6.6918 10.4077 6.6918Z"
+              fill="#151515"
+            />
+          </svg>
+          <span>Change Date</span>
+        </button>
+      </div>
+
+      <div class="task-input-section">
+        <input
+          type="text"
+          class="task-input"
+          id="newTaskInput"
+          placeholder="Add new task..."
+        />
+        <button class="btn-yellow" onclick="addTask()">
+          <svg
+            width="14"
+            height="15"
+            viewBox="0 0 14 15"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M13.202 0.852C12.6728 0.285 12.0316 0 11.2784 0H2.7216C1.9684 0 1.3272 0.285 0.7952 0.852C0.2632 1.419 0 2.109 0 2.916V12.081C0 12.879 0.266 13.566 0.7952 14.139C1.3244 14.712 1.9684 15 2.7216 15H11.2784C12.0316 15 12.6728 14.712 13.2048 14.142C13.734 13.569 14 12.882 14 12.084V2.916C14 2.109 13.734 1.422 13.202 0.852ZM12.4432 12.084C12.446 12.771 11.928 13.332 11.2868 13.335C11.284 13.335 11.2812 13.335 11.2784 13.335H2.7216C2.0804 13.338 1.5568 12.783 1.554 12.096C1.554 12.093 1.554 12.09 1.554 12.084V2.916C1.554 2.229 2.072 1.671 2.7132 1.668C2.716 1.668 2.7188 1.668 2.7216 1.668H11.2784C11.9196 1.665 12.4432 2.22 12.446 2.907C12.446 2.91 12.446 2.913 12.446 2.916V12.084H12.4432Z"
+              fill="#151515"
+            />
+            <path
+              d="M10.4077 6.6918H7.75786V3.86598C7.76604 3.65085 7.60793 3.4706 7.40892 3.46188C7.39802 3.46188 7.38984 3.46188 7.37893 3.46188H6.62107C6.41934 3.45316 6.25032 3.61887 6.24214 3.834C6.24214 3.84563 6.24214 3.85435 6.24214 3.86598V6.6918H3.59235C3.39062 6.68308 3.2216 6.8517 3.21342 7.06393C3.21342 7.07265 3.21342 7.08428 3.21342 7.093V7.90121C3.20524 8.11634 3.36336 8.29659 3.56509 8.30531C3.57327 8.30531 3.58418 8.30531 3.59235 8.30531H6.24214V11.134C6.23396 11.3492 6.38935 11.5294 6.59108 11.5381C6.60199 11.5381 6.61017 11.5381 6.62107 11.5381H7.37893C7.58067 11.5469 7.74968 11.3812 7.75786 11.166C7.75786 11.1544 7.75786 11.1457 7.75786 11.134V8.30822H10.4077C10.6094 8.31694 10.7784 8.15123 10.7866 7.93609C10.7866 7.92446 10.7866 7.91574 10.7866 7.90411V7.09591C10.7948 6.88077 10.6394 6.70052 10.4376 6.6918C10.4267 6.6918 10.4186 6.6918 10.4077 6.6918Z"
+              fill="#151515"
+            />
+          </svg>
+          <span>ADD Task</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Status Headers -->
+    <div class="status-headers">
+      <div class="status-grid">
+        <div class="status-header status-todo">TODO</div>
+        <div class="status-header status-progress">IN-PROGRESS</div>
+        <div class="status-header status-done">DONE</div>
+        <div class="status-header status-failed">FAILED</div>
+      </div>
+    </div>
+
+    <!-- Kanban Board -->
+    <div class="kanban-board">
+      <div class="board-grid">
+        <div class="column" id="todoColumn"></div>
+        <div class="column" id="progressColumn"></div>
+        <div class="column" id="doneColumn"></div>
+        <div class="column" id="failedColumn"></div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <span>Build by JST</span>
+    </footer>
+
+    <script>
+      // Task data structure
+      let tasks = [
+        { id: "1", text: "something..", status: "todo" },
+        { id: "2", text: "something..", status: "in-progress" },
+        { id: "3", text: "something..", status: "done" },
+        { id: "4", text: "something..", status: "failed" },
+        { id: "5", text: "something..", status: "todo" },
+      ];
+
+      // SVG Icons
+      const icons = {
+        arrowRight: `<svg width="13" height="16" viewBox="0 0 13 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12.7071 8.70711C13.0976 8.31658 13.0976 7.68342 12.7071 7.29289L6.34313 0.928932C5.95261 0.538408 5.31944 0.538408 4.92892 0.928932C4.53839 1.31946 4.53839 1.95262 4.92892 2.34315L10.5858 8L4.92892 13.6569C4.53839 14.0474 4.53839 14.6805 4.92892 15.0711C5.31944 15.4616 5.95261 15.4616 6.34313 15.0711L12.7071 8.70711ZM-1.52588e-05 8L-1.52588e-05 9L12 9V8V7L-1.52588e-05 7L-1.52588e-05 8Z" fill="white"/>
+            </svg>`,
+        arrowLeft: `<svg width="13" height="16" viewBox="0 0 13 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M0.292893 7.29289C-0.0976311 7.68342 -0.0976311 8.31658 0.292893 8.70711L6.65685 15.0711C7.04738 15.4616 7.68054 15.4616 8.07107 15.0711C8.46159 14.6805 8.46159 14.0474 8.07107 13.6569L2.41421 8L8.07107 2.34315C8.46159 1.95262 8.46159 1.31946 8.07107 0.928932C7.68054 0.538408 7.04738 0.538408 6.65685 0.928932L0.292893 7.29289ZM1 8L1 9L13 9V8V7L1 7L1 8Z" fill="white"/>
+            </svg>`,
+        delete: `<svg width="12" height="15" viewBox="0 0 12 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_3_48)">
+                    <path d="M11.947 2.75713H11.029V13.3261C11.0302 13.511 10.9934 13.6941 10.921 13.8641C10.7823 14.1948 10.5195 14.458 10.189 14.5971C10.0186 14.6695 9.83515 14.7062 9.65 14.7051H2.3C2.11483 14.7064 1.93138 14.6697 1.761 14.5971C1.43047 14.458 1.16766 14.1948 1.029 13.8641C0.956919 13.694 0.920502 13.5109 0.922 13.3261V2.75713H0V1.83813H3.676V0.919127C3.67423 0.795705 3.69878 0.673322 3.748 0.560127C3.79536 0.451184 3.86327 0.352384 3.948 0.269127C4.03171 0.184933 4.1304 0.117105 4.239 0.0691266C4.35331 0.0215395 4.4762 -0.00195021 4.6 0.000126629H7.352C7.47536 -0.000927261 7.59759 0.023588 7.711 0.0721266C7.81889 0.118988 7.91695 0.185829 8 0.269127C8.08436 0.352699 8.15221 0.451422 8.2 0.560127C8.248 0.673668 8.27217 0.79586 8.271 0.919127V1.83813H11.948L11.947 2.75713ZM10.109 2.75713H1.838V13.3261C1.83955 13.4476 1.88852 13.5637 1.97445 13.6497C2.06038 13.7356 2.17648 13.7846 2.298 13.7861H9.65C9.77152 13.7846 9.88762 13.7356 9.97355 13.6497C10.0595 13.5637 10.1084 13.4476 10.11 13.3261L10.109 2.75713ZM4.6 11.9481H3.676V4.60013H4.6V11.9481ZM4.6 1.83813H7.352V0.919127H4.6V1.83813ZM6.438 11.9481H5.514V4.60013H6.432L6.438 11.9481ZM8.276 11.9481H7.352V4.60013H8.27L8.276 11.9481Z" fill="white"/>
+                </g>
+                <defs>
+                    <clipPath id="clip0_3_48">
+                        <rect width="11.947" height="14.705" fill="white"/>
+                    </clipPath>
+                </defs>
+            </svg>`,
+      };
+
+      // Utility functions
+      function generateId() {
+        return Date.now().toString();
+      }
+
+      function getTasksByStatus(status) {
+        return tasks.filter((task) => task.status === status);
+      }
+
+      function findTaskById(id) {
+        return tasks.find((task) => task.id === id);
+      }
+
+      function updateTaskStatus(id, newStatus) {
+        const task = findTaskById(id);
+        if (task) {
+          task.status = newStatus;
+          renderTasks();
+        }
+      }
+
+      function deleteTask(id) {
+        tasks = tasks.filter((task) => task.id !== id);
+        renderTasks();
+      }
+
+      function moveTask(id, direction) {
+        const task = findTaskById(id);
+        if (!task) return;
+
+        const statuses = ["todo", "in-progress", "done", "failed"];
+        const currentIndex = statuses.indexOf(task.status);
+        let newIndex = currentIndex;
+
+        if (direction === "next" && currentIndex < statuses.length - 1) {
+          newIndex = currentIndex + 1;
+        } else if (direction === "prev" && currentIndex > 0) {
+          newIndex = currentIndex - 1;
+        }
+
+        if (newIndex !== currentIndex) {
+          updateTaskStatus(id, statuses[newIndex]);
+        }
+      }
+
+      function addTask() {
+        const input = document.getElementById("newTaskInput");
+        const text = input.value.trim();
+
+        if (text) {
+          const newTask = {
+            id: generateId(),
+            text: text,
+            status: "todo",
+          };
+          tasks.push(newTask);
+          input.value = "";
+          renderTasks();
+        }
+      }
+
+      function createTaskCard(task) {
+        const card = document.createElement("div");
+        card.className = "task-card";
+
+        let leftButton = "";
+        let rightButton = "";
+
+        const statuses = ["todo", "in-progress", "done", "failed"];
+        const currentIndex = statuses.indexOf(task.status);
+
+        // Left button logic
+        if (task.status === "todo") {
+          leftButton = `<button class="task-btn" onclick="deleteTask('${task.id}')">${icons.delete}</button>`;
+        } else {
+          leftButton = `<button class="task-btn" onclick="moveTask('${task.id}', 'prev')">${icons.arrowLeft}</button>`;
+        }
+
+        // Right button logic
+        if (task.status === "failed") {
+          rightButton = `<button class="task-btn" onclick="deleteTask('${task.id}')">${icons.delete}</button>`;
+        } else if (currentIndex < statuses.length - 1) {
+          rightButton = `<button class="task-btn" onclick="moveTask('${task.id}', 'next')">${icons.arrowRight}</button>`;
+        }
+
+        card.innerHTML = `
+                ${leftButton}
+                <span class="task-text">${task.text}</span>
+                ${rightButton}
+            `;
+
+        return card;
+      }
+
+      function renderTasks() {
+        const columns = {
+          todo: document.getElementById("todoColumn"),
+          "in-progress": document.getElementById("progressColumn"),
+          done: document.getElementById("doneColumn"),
+          failed: document.getElementById("failedColumn"),
+        };
+
+        // Clear all columns
+        Object.values(columns).forEach((column) => {
+          column.innerHTML = "";
+        });
+
+        // Render tasks in their respective columns
+        tasks.forEach((task) => {
+          const card = createTaskCard(task);
+          columns[task.status].appendChild(card);
+        });
+      }
+
+      // Event listeners
+      document
+        .getElementById("newTaskInput")
+        .addEventListener("keypress", function (e) {
+          if (e.key === "Enter") {
+            addTask();
+          }
+        });
+
+      // Initial render
+      renderTasks();
+    </script>
+  </body>
+</html>
