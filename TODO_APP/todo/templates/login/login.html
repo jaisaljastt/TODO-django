@@ -5,118 +5,76 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TODO - Login</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;700;900&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link rel="stylesheet" href="{% static 'login/style.css' %}" />
   </head>
   <body>
-    <div class="login-container">
-      <!-- Background decorative elements -->
-      <div class="background-elements">
-        <!-- Bottom left circular elements -->
-        <div class="circle-outer"></div>
-        <div class="circle-middle"></div>
-        <div class="circle-inner"></div>
-
-        <!-- Top right decorative path -->
-        <div class="decorative-path">
-          <svg width="600" height="400" viewBox="0 0 600 400">
-            <path
-              d="M200 50C150 60 100 20 80 0L600 0V400H550C400 380 420 280 460 240C480 220 520 150 500 100C480 40 350 45 200 50Z"
-              fill="#FFD100"
-            />
-          </svg>
-        </div>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="nav-content">
+        <h1 class="app-title">TODO</h1>
+        <h3 class="app-subtitle">BY JST</h3>
       </div>
+    </nav>
 
-      <!-- Main content -->
-      <div class="main-content">
-        <!-- Logo section -->
-        <div class="logo-section">
-          <h1 class="todo-title">TODO</h1>
-          <p class="todo-subtitle">by jST</p>
+    <!-- Main Content -->
+    <div class="main-content">
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Sign In to TODO</h2>
+          <p class="card-description">
+            Enter your credentials to access your todo list
+          </p>
         </div>
 
-        <!-- Login form -->
-        <form class="login-form" onsubmit="handleLogin(event)">
-          <!-- Email input -->
-          <div class="input-group">
-            <div class="input-container">
-              <div class="input-icon">
-                <svg width="26" height="24" viewBox="0 0 26 24" fill="none">
-                  <path
-                    d="M21.0929 20.5712V18.6199C21.0929 17.5849 20.663 16.5923 19.8977 15.8604C19.1325 15.1285 18.0946 14.7173 17.0123 14.7173H8.85118C7.76895 14.7173 6.73104 15.1285 5.96578 15.8604C5.20053 16.5923 4.77061 17.5849 4.77061 18.6199V20.5712"
-                    stroke="white"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M12.9317 10.8147C15.1854 10.8147 17.0123 9.06745 17.0123 6.9121C17.0123 4.75675 15.1854 3.00949 12.9317 3.00949C10.6781 3.00949 8.85118 4.75675 8.85118 6.9121C8.85118 9.06745 10.6781 10.8147 12.9317 10.8147Z"
-                    stroke="white"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </div>
+        <form class="login-form" method="POST">
+          {% csrf_token %} {% if messages %} {% for message in messages %}
+          <h2 style="color: #b22222; text-decoration: underline">
+            {{message}}
+          </h2>
+          {% endfor %} {% endif %}
+          <div class="form-content">
+            <div class="form-group">
+              <label for="username" class="form-label">Username</label>
               <input
-                type="email"
-                placeholder="EMAIL"
+                type="text"
+                id="username"
+                name="username"
+                placeholder="Enter your username"
                 required
                 class="form-input"
               />
             </div>
-          </div>
 
-          <!-- Password input -->
-          <div class="input-group">
-            <div class="input-container">
-              <div class="input-icon">
-                <svg width="26" height="24" viewBox="0 0 26 24" fill="none">
-                  <path
-                    d="M20.0727 10.9156H5.79076C4.66394 10.9156 3.75047 11.7892 3.75047 12.8669V19.6965C3.75047 20.7742 4.66394 21.6478 5.79076 21.6478H20.0727C21.1996 21.6478 22.113 20.7742 22.113 19.6965V12.8669C22.113 11.7892 21.1996 10.9156 20.0727 10.9156Z"
-                    stroke="white"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                  <path
-                    d="M7.83104 10.9156V7.013C7.83104 5.71921 8.36843 4.4784 9.325 3.56355C10.2816 2.6487 11.579 2.13474 12.9317 2.13474C14.2845 2.13474 15.5819 2.6487 16.5385 3.56355C17.4951 4.4784 18.0325 5.71921 18.0325 7.013V10.9156"
-                    stroke="white"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  />
-                </svg>
-              </div>
+            <div class="form-group">
+              <label for="password" class="form-label">Password</label>
               <input
                 type="password"
-                placeholder="PASSWORD"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
                 required
                 class="form-input"
               />
             </div>
+
+            <div class="forgot-password">
+              <a href="#" class="forgot-link">Forgot password?</a>
+            </div>
           </div>
 
-          <!-- Login button -->
-          <button type="submit" class="login-button">LOGIN</button>
+          <div class="form-footer">
+            <button type="submit" class="submit-btn">Sign In</button>
+            <p class="register-link">
+              New user? <a href="{% url 'register' %}" class="link">Register</a>
+            </p>
+          </div>
         </form>
-
-        <!-- Footer links -->
-        <div class="footer-links">
-          <div class="new-user-section">
-            <span class="new-user-text">New User?</span>
-            <button onclick="handleSignUp()" class="signup-button">
-              SIGN UP
-            </button>
-          </div>
-          <button
-            onclick="handleForgotPassword()"
-            class="forgot-password-button"
-          >
-            Forgot password?
-          </button>
-        </div>
       </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p class="footer-text">build by jst</p>
+    </footer>
   </body>
 </html>
