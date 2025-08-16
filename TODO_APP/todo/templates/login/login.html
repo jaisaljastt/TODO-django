@@ -27,11 +27,13 @@
         </div>
 
         <form class="login-form" method="POST">
-          {% csrf_token %} {% if messages %} {% for message in messages %}
-          <h2 style="color: #b22222; text-decoration: underline">
-            {{message}}
-          </h2>
-          {% endfor %} {% endif %}
+          {% if messages %} {% for message in messages %}
+          <div
+            class="{% if message.tags %}{{ message.tags }}-messages{% else %}error-messages{% endif %}"
+          >
+            {{ message }}
+          </div>
+          {% endfor %} {% endif %} {% csrf_token %}
           <div class="form-content">
             <div class="form-group">
               <label for="username" class="form-label">Username</label>
@@ -58,7 +60,9 @@
             </div>
 
             <div class="forgot-password">
-              <a href="#" class="forgot-link">Forgot password?</a>
+              <a href="{% url 'password_reset' %}" class="forgot-link"
+                >Forgot password?</a
+              >
             </div>
           </div>
 

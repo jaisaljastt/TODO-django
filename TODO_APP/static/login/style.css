@@ -247,3 +247,51 @@ body {
   outline-offset: 2px;
   border-radius: 2px;
 }
+
+/* Error Messages */
+.error-messages {
+  background-color: rgba(212, 24, 61, 0.2);
+  border: 1px solid #d4183d;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.error-messages ul {
+  list-style: none;
+  color: #ff6b6b;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.error-messages li {
+  margin-bottom: 0.25rem;
+}
+
+.error-messages li:last-child {
+  margin-bottom: 0;
+}
+
+/* Success Messages */
+.success-messages {
+  background-color: rgba(40, 167, 69, 0.2);
+  border: 1px solid #28a745;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.success-messages ul {
+  list-style: none;
+  color: #28a745;
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.success-messages li {
+  margin-bottom: 0.25rem;
+}
+
+.success-messages li:last-child {
+  margin-bottom: 0;
+}

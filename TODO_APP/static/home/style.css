@@ -84,7 +84,7 @@ body {
 
 /* Main container */
 .main-container {
-  max-width: 1280px;
+  min-width: 1280px;
   margin: 0 auto;
   padding: 1.5rem;
   flex: 1;
@@ -225,8 +225,15 @@ body {
 }
 
 .task-text {
+  max-width: 80ch; /* Limit to exactly 26 characters */
+  word-break: break-word;
+  white-space: pre-wrap; /* Allows wrapping and preserves spaces */
+  overflow-wrap: break-word;
   color: #ffd700;
   font-weight: 400;
+  line-height: 1.4;
+  display: inline-block;
+  width: 100%;
 }
 
 .no-tasks {
@@ -381,6 +388,7 @@ body {
   }
 
   .main-container {
+    min-width: 100%;
     padding: 1rem;
   }
 
@@ -416,6 +424,11 @@ body {
 
   .summary-label {
     font-size: 0.75rem;
+  }
+
+  .task-text {
+    max-width: 26ch; /* Maintain 26 character limit on mobile */
+    font-size: 0.8rem;
   }
 }
 

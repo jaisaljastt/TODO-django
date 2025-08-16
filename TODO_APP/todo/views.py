@@ -17,6 +17,9 @@ from django.utils.dateparse import parse_date
 from .models import Task
 import json
 
+from django.contrib.auth.views import PasswordResetView
+from django.contrib.auth.forms import PasswordResetForm
+
 # ... (keep existing login/register/logout views)
 
 @login_required
@@ -136,6 +139,37 @@ def LogoutView(request):
     logout(request)
     return redirect('login')
 
-# @login_required
-# def home_view(request):
-#     return render(request, 'home/index.html')
+class CustomPasswordResetView(PasswordResetView):
+    template_name = 'password/forgot-password.html'
+
+    def form_valid(self, form):
+        email = form.cleaned_data.get('email')
+        if not User.objects.filter(email=email).exists():
+            messages.error(self.request, "No account found with this email.")
+            return redirect('password_reset')  # redirect back to the reset page
+
+        # If email exists, save to session
+        self.request.session['reset_email'] = email
+
+        # Continue with normal flow (sending reset email, redirecting, etc.)
+        return super().form_valid(form)
+    
+def resend_password_reset_email(request):
+    email = request.session.get('reset_email')
+    if email:
+        # Check if a user with this email exists
+        if not User.objects.filter(email=email).exists():
+            messages.error(request, "No user is associated with this email address.")
+            return redirect('password_reset')
+        form = PasswordResetForm({'email': email})
+        if form.is_valid():
+            form.save(
+                request=request,
+                use_https=request.is_secure(),
+                email_template_name='registration/password_reset_email.html',
+            )
+            messages.success(request, "Password reset email resent.")
+    else:
+        messages.error(request, "No email found in session.")
+        return redirect('password_reset')
+    return redirect('password_reset_done')

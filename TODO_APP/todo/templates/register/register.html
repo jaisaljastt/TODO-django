@@ -27,11 +27,11 @@
         </div>
 
         <form class="register-form" method="POST">
-          {% csrf_token %} {% if messages %} {% for message in messages %}
-          <h2 style="color: #b22222; text-decoration: underline">
-            {{message}}
-          </h2>
-          {% endfor %} {% endif %}
+          {% if messages %}
+          <div class="error-messages">
+            {% for message in messages %} {{ message }} {% endfor %}
+          </div>
+          {% endif %} {% csrf_token %}
           <div class="form-content">
             <!-- Error Messages (initially hidden) -->
             <div
