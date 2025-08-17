@@ -23,6 +23,14 @@
     <main class="main-content">
       <div class="card">
         <div class="card-header">
+          <!-- Messages Block -->
+          {% if messages %} {% for message in messages %}
+          <div
+            class="{% if message.tags %}{{ message.tags }}-messages{% else %}error-messages{% endif %}"
+          >
+            {{ message }}
+          </div>
+          {% endfor %} {% endif %}
           <div class="icon-container">
             <!-- Mail Icon SVG -->
             <svg
